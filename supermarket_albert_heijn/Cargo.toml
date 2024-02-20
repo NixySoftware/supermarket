@@ -1,0 +1,10 @@
+[package]
+name = "supermarket_albert_heijn"
+version = "0.1.0"
+edition = "2021"
+
+authors.workspace = true
+license.workspace = true
+repository.workspace = true
+
+[dependencies]

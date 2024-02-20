@@ -1,0 +1,12 @@
+[workspace]
+members = [
+    "supermarket",
+    "supermarket_albert_heijn",
+    "supermarket_jumbo"
+]
+resolver = "2"
+
+[workspace.package]
+authors = ["Nixy <info@nixy.software>"]
+license = "MIT"
+repository = "https://github.com/NixyOrg/supermarket"
