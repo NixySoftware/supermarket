@@ -1,0 +1,5 @@
+query GetMember {
+  member {
+    id
+  }
+}

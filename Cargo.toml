@@ -2,7 +2,8 @@
 members = [
     "supermarket",
     "supermarket_albert_heijn",
-    "supermarket_jumbo"
+    "supermarket_jumbo",
+    "supermarket_playground",
 ]
 resolver = "2"
 
@@ -10,3 +11,9 @@ resolver = "2"
 authors = ["Nixy <info@nixy.software>"]
 license = "MIT"
 repository = "https://github.com/NixyOrg/supermarket"
+
+[workspace.dependencies]
+graphql_client = { version = "0.13.0" }
+reqwest = { version = "0.11.24", features = ["json"] }
+serde = "1.0.197"
+serde_json = "1.0.114"

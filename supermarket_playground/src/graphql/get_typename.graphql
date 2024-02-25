@@ -1,0 +1,4 @@
+query GetTypename {
+  __typename
+  purchaseStampServerTime
+}

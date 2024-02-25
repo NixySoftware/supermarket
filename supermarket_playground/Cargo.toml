@@ -1,0 +1,16 @@
+[package]
+name = "supermarket_playground"
+version = "0.1.0"
+edition = "2021"
+
+authors.workspace = true
+license.workspace = true
+repository.workspace = true
+
+[dependencies]
+chrono = "0.4.34"
+graphql_client = { version = "0.13.0", features = ["reqwest"] }
+reqwest = { version = "0.11.24", features = ["json"] }
+serde = "1.0.197"
+serde_json = "1.0.114"
+tokio = { version = "1.36.0", features = ["full"] }

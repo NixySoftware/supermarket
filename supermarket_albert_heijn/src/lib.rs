@@ -1,14 +1,20 @@
-pub fn add(left: usize, right: usize) -> usize {
-    left + right
-}
+mod client;
+mod internal;
+
+pub use client::AlbertHeijnClient;
 
 #[cfg(test)]
 mod tests {
     use super::*;
+    use supermarket::internal::GraphQLError;
 
-    #[test]
-    fn it_works() {
-        let result = add(2, 2);
-        assert_eq!(result, 4);
+    #[tokio::test]
+    async fn it_works() -> Result<(), GraphQLError> {
+        let client = AlbertHeijnClient::new();
+        let member = client.internal.member().await?;
+
+        println!("{:#?}", member);
+
+        Ok(())
     }
 }
