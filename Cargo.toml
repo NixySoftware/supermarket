@@ -10,7 +10,7 @@ resolver = "2"
 [workspace.package]
 authors = ["Nixy <info@nixy.software>"]
 license = "MIT"
-repository = "https://github.com/NixyOrg/supermarket"
+repository = "https://github.com/NixySoftware/supermarket"
 
 [workspace.dependencies]
 graphql_client = { version = "0.13.0" }
