@@ -6,12 +6,6 @@ pub struct AlbertHeijnClient {
     pub internal: AlbertHeijnInternalClient,
 }
 
-impl Default for AlbertHeijnClient {
-    fn default() -> Self {
-        Self::new()
-    }
-}
-
 impl AlbertHeijnClient {
     pub fn new() -> Self {
         AlbertHeijnClient {
@@ -21,3 +15,9 @@ impl AlbertHeijnClient {
 }
 
 impl Client for AlbertHeijnClient {}
+
+impl Default for AlbertHeijnClient {
+    fn default() -> Self {
+        Self::new()
+    }
+}
