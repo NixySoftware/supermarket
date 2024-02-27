@@ -9,6 +9,7 @@ repository.workspace = true
 
 [dependencies]
 async-trait.workspace = true
+chrono = "0.4.34"
 graphql_client.workspace = true
 reqwest.workspace = true
 serde.workspace = true
