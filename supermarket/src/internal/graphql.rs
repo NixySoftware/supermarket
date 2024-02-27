@@ -6,6 +6,8 @@ use tokio::sync::Mutex;
 use crate::internal::auth::Auth;
 use crate::internal::error::ClientError;
 
+// TODO: use JsonClient to reduce code duplication
+
 pub struct GraphQLClient {
     client: reqwest::Client,
     url: &'static str,
@@ -39,7 +41,6 @@ impl GraphQLClient {
             Err(e) => return Err(ClientError::RequestError(e)),
         };
 
-        // TODO: this code is shared between GraphQLClient and RestClient
         if response.status().is_success() {
             // TODO: success response doesn't mean GraphQL query has no errors
             match response.json().await {

@@ -117,7 +117,7 @@ impl AlbertHeijnAuth {
 impl Auth for AlbertHeijnAuth {
     async fn request(&mut self, builder: RequestBuilder) -> Result<RequestBuilder, ClientError> {
         if let Some(access_token) = &self.access_token {
-            // TODO: check if access token if already expired
+            // TODO: check if access token is already expired
 
             Ok(builder.bearer_auth(access_token))
         } else if self.refresh_token.is_some() {

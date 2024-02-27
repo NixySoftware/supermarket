@@ -1,5 +1,9 @@
 query GetMember {
   member {
     id
+    name {
+      first
+      last
+    }
   }
 }

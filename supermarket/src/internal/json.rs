@@ -44,7 +44,6 @@ impl JsonClient {
             Err(e) => return Err(ClientError::RequestError(e)),
         };
 
-        // TODO: this code is shared between GraphQLClient and RestClient
         if response.status().is_success() {
             match response.json::<R>().await {
                 Ok(response) => Ok(response),
