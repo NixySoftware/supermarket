@@ -13,7 +13,9 @@ license = "MIT"
 repository = "https://github.com/NixySoftware/supermarket"
 
 [workspace.dependencies]
+async-trait = "0.1.77"
 graphql_client = { version = "0.13.0" }
 reqwest = { version = "0.11.24", features = ["json"] }
 serde = "1.0.197"
 serde_json = "1.0.114"
+tokio = { version = "1.36.0", features = ["full"] }

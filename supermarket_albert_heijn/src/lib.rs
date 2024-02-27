@@ -6,10 +6,10 @@ pub use client::AlbertHeijnClient;
 #[cfg(test)]
 mod tests {
     use super::*;
-    use supermarket::internal::GraphQLClientError;
+    use supermarket::internal::ClientError;
 
     #[tokio::test]
-    async fn it_works() -> Result<(), GraphQLClientError> {
+    async fn it_works() -> Result<(), ClientError> {
         let client = AlbertHeijnClient::new();
         let member = client.internal.member().await?;
 

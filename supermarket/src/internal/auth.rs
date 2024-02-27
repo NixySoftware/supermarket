@@ -1,13 +1,12 @@
-use std::future::Future;
-
+use async_trait::async_trait;
 use reqwest::RequestBuilder;
 
+use crate::internal::error::ClientError;
+
+#[async_trait]
 pub trait Auth {
-    fn request(
-        &mut self,
-        builder: RequestBuilder,
-    ) -> impl Future<Output = Result<RequestBuilder, Box<dyn std::error::Error>>> {
-        builder
+    async fn request(&mut self, builder: RequestBuilder) -> Result<RequestBuilder, ClientError> {
+        Ok(builder)
     }
 }
 
@@ -19,11 +18,9 @@ impl NoAuth {
     }
 }
 
+#[async_trait]
 impl Auth for NoAuth {
-    async fn request(
-        &mut self,
-        builder: RequestBuilder,
-    ) -> Result<RequestBuilder, Box<dyn std::error::Error>> {
+    async fn request(&mut self, builder: RequestBuilder) -> Result<RequestBuilder, ClientError> {
         Ok(builder)
     }
 }

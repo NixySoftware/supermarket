@@ -1,10 +1,10 @@
-use std::rc::Rc;
+use std::sync::Arc;
 
+use async_trait::async_trait;
 use reqwest::RequestBuilder;
 use serde::Deserialize;
-use supermarket::internal::{
-    Auth, GraphQLClient, GraphQLClientError, JsonClient, JsonClientError, NoAuth, Nothing,
-};
+use supermarket::internal::{Auth, ClientError, GraphQLClient, JsonClient, NoAuth, Nothing};
+use tokio::sync::Mutex;
 
 use crate::internal::member::get_member;
 use crate::internal::member::GetMember;
@@ -14,7 +14,7 @@ const GRAPHQL_API_URL: &str = "https://api.ah.nl/graphql";
 const OAUTH_CLIENT_ID: &str = "appie-android";
 
 pub struct AlbertHeijnInternalClient {
-    auth: Rc<AlbertHeijnAuth>,
+    auth: Arc<Mutex<AlbertHeijnAuth>>,
     graphql_client: GraphQLClient,
     json_client: JsonClient,
 }
@@ -41,34 +41,52 @@ struct AlbertHeijnAuth {
 impl AlbertHeijnAuth {
     fn new(json_client: JsonClient) -> Self {
         AlbertHeijnAuth {
-            json_client: json_client,
+            json_client,
             access_token: None,
             // TODO: store when access token expires
             refresh_token: None,
         }
     }
 
-    async fn request_anonymous_token(self) -> Result<Token, JsonClientError> {
-        self.json_client
-            .post(
+    async fn request_anonymous_token(&mut self) -> Result<String, ClientError> {
+        let token = self
+            .json_client
+            .post::<_, _, Token>(
                 "/mobile-auth/v1/auth/token/anonymous",
                 Nothing,
                 [("clientId", OAUTH_CLIENT_ID)],
             )
-            .await
+            .await?;
+
+        let access_token = token.access_token.clone();
+
+        self.access_token = Some(token.access_token);
+        self.refresh_token = Some(token.refresh_token);
+        // TODO: convert expires_in to chrono?
+
+        Ok(access_token)
     }
 
-    async fn request_token(self, code: &str) -> Result<Token, JsonClientError> {
-        self.json_client
+    async fn request_token(&mut self, code: &str) -> Result<String, ClientError> {
+        let token = self
+            .json_client
             .post::<_, _, Token>(
                 "/mobile-auth/v1/auth/token",
                 Nothing,
                 [("clientId", OAUTH_CLIENT_ID), ("code", &code)],
             )
-            .await
+            .await?;
+
+        let access_token = token.access_token.clone();
+
+        self.access_token = Some(token.access_token);
+        self.refresh_token = Some(token.refresh_token);
+        // TODO: convert expires_in to chrono?
+
+        Ok(access_token)
     }
 
-    async fn refresh_token(&mut self) -> Result<(), JsonClientError> {
+    async fn refresh_token(&mut self) -> Result<String, ClientError> {
         if let Some(refresh_token) = &self.refresh_token {
             let token = self
                 .json_client
@@ -82,29 +100,32 @@ impl AlbertHeijnAuth {
                 )
                 .await?;
 
+            let access_token = token.access_token.clone();
+
             self.access_token = Some(token.access_token);
             self.refresh_token = Some(token.refresh_token);
             // TODO: convert expires_in to chrono?
 
-            Ok(())
+            Ok(access_token)
         } else {
-            Err(JsonClientError::TextError(String::from("No refresh token")))
+            Err(ClientError::TextError(String::from("No refresh token")))
         }
     }
 }
 
+#[async_trait]
 impl Auth for AlbertHeijnAuth {
-    async fn request(&mut self, builder: RequestBuilder) -> RequestBuilder {
+    async fn request(&mut self, builder: RequestBuilder) -> Result<RequestBuilder, ClientError> {
         if let Some(access_token) = &self.access_token {
-            builder.bearer_auth(access_token)
-        } else if let Some(_) = &self.refresh_token {
-            self.refresh_token().await;
+            Ok(builder.bearer_auth(access_token))
+        } else if self.refresh_token.is_some() {
+            let access_token = self.refresh_token().await?;
 
-            builder.bearer_auth(access_token)
+            Ok(builder.bearer_auth(access_token))
         } else {
-            self.request_anonymous_token().await;
+            let access_token = self.request_anonymous_token().await?;
 
-            builder
+            Ok(builder.bearer_auth(access_token))
         }
     }
 }
@@ -116,24 +137,28 @@ impl AlbertHeijnInternalClient {
             .build()
             .unwrap();
 
-        let auth = Rc::new(AlbertHeijnAuth::new(JsonClient::new(
+        let auth = Arc::new(Mutex::new(AlbertHeijnAuth::new(JsonClient::new(
             client.clone(),
             API_URL,
-            Rc::new(NoAuth::new()),
-        )));
+            Arc::new(Mutex::new(NoAuth::new())),
+        ))));
 
         AlbertHeijnInternalClient {
-            auth: Rc::clone(&auth),
+            auth: Arc::clone(&auth),
             graphql_client: GraphQLClient::new(
                 client.clone(),
                 GRAPHQL_API_URL,
-                Rc::clone(&auth) as Rc<dyn Auth>,
+                Arc::clone(&auth) as Arc<Mutex<dyn Auth + Send>>,
             ),
-            json_client: JsonClient::new(client.clone(), API_URL, Rc::clone(&auth) as Rc<dyn Auth>),
+            json_client: JsonClient::new(
+                client.clone(),
+                API_URL,
+                Arc::clone(&auth) as Arc<Mutex<dyn Auth + Send>>,
+            ),
         }
     }
 
-    pub async fn member(self) -> Result<Option<get_member::GetMemberMember>, GraphQLClientError> {
+    pub async fn member(self) -> Result<Option<get_member::GetMemberMember>, ClientError> {
         let response = self
             .graphql_client
             .query::<GetMember>(get_member::Variables {})
