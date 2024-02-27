@@ -52,6 +52,10 @@ impl AlbertHeijnAuth {
         }
     }
 
+    pub fn set_refresh_token(&mut self, refresh_token: String) {
+        self.refresh_token = Some(refresh_token);
+    }
+
     fn process_token(&mut self, token: Token) -> String {
         let access_token = token.access_token.clone();
 
