@@ -1,5 +1,6 @@
 use std::sync::Arc;
 
+use supermarket::internal::ClientError;
 use supermarket::internal::{Auth, GraphQLClient, GraphQLClientError, JsonClient, NoAuth};
 use tokio::sync::Mutex;
 
@@ -50,12 +51,19 @@ impl AlbertHeijnInternalClient {
         }
     }
 
-    pub async fn request_token(self, refresh_token: String) -> Self {
-        {
-            let mut auth = self.auth.lock().await;
-            auth.set_refresh_token(refresh_token);
-        }
-        self
+    pub async fn auth_with_code(self, code: String) -> Result<(), ClientError> {
+        let mut auth = self.auth.lock().await;
+        auth.request_token(code).await?;
+
+        Ok(())
+    }
+
+    pub async fn auth_with_refresh_token(self, refresh_token: String) -> Result<(), ClientError> {
+        let mut auth = self.auth.lock().await;
+        auth.set_refresh_token(refresh_token);
+        auth.refresh_token().await?;
+
+        Ok(())
     }
 
     pub async fn member(self) -> Result<Option<get_member::GetMemberMember>, GraphQLClientError> {

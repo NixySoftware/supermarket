@@ -56,7 +56,7 @@ impl GraphQLClient {
         };
 
         match response.errors {
-            Some(errors) if errors.len() > 0 => Err(GraphQLClientError::GraphQLError(errors)),
+            Some(errors) if !errors.is_empty() => Err(GraphQLClientError::GraphQLError(errors)),
             _ => Ok(response),
         }
     }

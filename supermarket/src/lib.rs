@@ -2,6 +2,7 @@ mod client;
 pub mod internal;
 
 pub use client::Client;
+pub use internal::ClientError;
 
 #[cfg(test)]
 mod tests {

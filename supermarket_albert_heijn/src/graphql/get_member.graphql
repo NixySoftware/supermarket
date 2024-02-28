@@ -1,6 +1,7 @@
 query GetMember {
   member {
     id
+    emailAddress
     name {
       first
       last

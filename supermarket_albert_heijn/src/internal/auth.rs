@@ -47,20 +47,7 @@ impl AlbertHeijnAuth {
         access_token
     }
 
-    async fn request_anonymous_token(&mut self) -> Result<String, ClientError> {
-        let token = self
-            .json_client
-            .post::<_, _, Token>(
-                "/mobile-auth/v1/auth/token/anonymous",
-                Nothing,
-                HashMap::from([("clientId", OAUTH_CLIENT_ID)]),
-            )
-            .await?;
-
-        Ok(self.process_token(token))
-    }
-
-    async fn request_token(&mut self, code: &str) -> Result<String, ClientError> {
+    pub async fn request_token(&mut self, code: String) -> Result<String, ClientError> {
         let token = self
             .json_client
             .post::<_, _, Token>(
@@ -73,7 +60,20 @@ impl AlbertHeijnAuth {
         Ok(self.process_token(token))
     }
 
-    async fn refresh_token(&mut self) -> Result<String, ClientError> {
+    pub async fn request_anonymous_token(&mut self) -> Result<String, ClientError> {
+        let token = self
+            .json_client
+            .post::<_, _, Token>(
+                "/mobile-auth/v1/auth/token/anonymous",
+                Nothing,
+                HashMap::from([("clientId", OAUTH_CLIENT_ID)]),
+            )
+            .await?;
+
+        Ok(self.process_token(token))
+    }
+
+    pub async fn refresh_token(&mut self) -> Result<String, ClientError> {
         if let Some(refresh_token) = &self.refresh_token {
             let token = self
                 .json_client

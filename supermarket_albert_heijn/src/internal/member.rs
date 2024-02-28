@@ -1,5 +1,7 @@
 use graphql_client::GraphQLQuery;
 
+use crate::internal::scalar::*;
+
 #[derive(GraphQLQuery)]
 #[graphql(
     schema_path = "src/graphql/schema.graphql",
