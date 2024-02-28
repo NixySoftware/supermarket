@@ -25,6 +25,10 @@ impl AlbertHeijnClient {
     pub async fn token(&self) -> AlbertHeijnToken {
         self.internal.token().await
     }
+
+    pub async fn set_token(&self, token: AlbertHeijnToken) {
+        self.internal.set_token(token).await
+    }
 }
 
 impl Client for AlbertHeijnClient {}

@@ -55,6 +55,10 @@ impl AlbertHeijnInternalClient {
         self.auth.lock().await.token()
     }
 
+    pub async fn set_token(&self, token: AlbertHeijnToken) {
+        self.auth.lock().await.set_token(token)
+    }
+
     pub async fn auth_with_code(&self, code: &str) -> Result<(), ClientError> {
         let mut auth = self.auth.lock().await;
         auth.request_token(String::from(code)).await?;
@@ -70,7 +74,7 @@ impl AlbertHeijnInternalClient {
         Ok(())
     }
 
-    pub async fn member(self) -> Result<Option<get_member::GetMemberMember>, GraphQLClientError> {
+    pub async fn member(&self) -> Result<Option<get_member::GetMemberMember>, GraphQLClientError> {
         let response = self
             .graphql_client
             .query::<GetMember>(get_member::Variables {})

@@ -41,7 +41,7 @@ impl GraphQLClient {
     }
 
     pub async fn query<Q: GraphQLQuery>(
-        self,
+        &self,
         variables: Q::Variables,
     ) -> Result<Response<Q::ResponseData>, GraphQLClientError> {
         let body = Q::build_query(variables);

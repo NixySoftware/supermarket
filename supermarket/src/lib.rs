@@ -1,4 +1,5 @@
 mod client;
+pub mod credentials;
 pub mod internal;
 
 pub use client::Client;

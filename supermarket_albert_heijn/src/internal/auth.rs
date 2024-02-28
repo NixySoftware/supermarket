@@ -4,7 +4,7 @@ use async_trait::async_trait;
 use chrono::prelude::*;
 use chrono::TimeDelta;
 use reqwest::RequestBuilder;
-use serde::Deserialize;
+use serde::{Deserialize, Serialize};
 use supermarket::internal::{Auth, ClientError, JsonClient, Nothing};
 
 const OAUTH_CLIENT_ID: &str = "appie-android";
@@ -16,7 +16,7 @@ struct Token {
     expires_in: i64,
 }
 
-#[derive(Debug)]
+#[derive(Serialize, Deserialize, Debug)]
 pub struct AlbertHeijnToken {
     access_token: Option<(String, DateTime<Local>)>,
     refresh_token: Option<String>,
@@ -62,6 +62,8 @@ impl AlbertHeijnAuth {
             Local::now() + TimeDelta::seconds(token.expires_in),
         ));
         self.refresh_token = Some(token.refresh_token);
+
+        println!("{:#?} | {:#?}", self.access_token, self.refresh_token);
 
         access_token
     }
@@ -116,7 +118,7 @@ impl AlbertHeijnAuth {
 #[async_trait]
 impl Auth for AlbertHeijnAuth {
     async fn request(&mut self, builder: RequestBuilder) -> Result<RequestBuilder, ClientError> {
-        if let Some((access_token, expires_at)) = &self.access_token {
+        if let Some((access_token, _expires_at)) = &self.access_token {
             // TODO: check if access token is already expired
 
             Ok(builder.bearer_auth(access_token))
