@@ -1,7 +1,7 @@
 use async_trait::async_trait;
 use reqwest::RequestBuilder;
 
-use crate::internal::error::ClientError;
+use crate::internal::client::ClientError;
 
 #[async_trait]
 pub trait Auth {

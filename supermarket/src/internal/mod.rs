@@ -1,11 +1,9 @@
 mod auth;
-mod error;
+mod client;
 mod graphql;
 mod json;
-mod util;
 
 pub use auth::*;
-pub use error::*;
+pub use client::*;
 pub use graphql::*;
 pub use json::*;
-pub use util::*;
