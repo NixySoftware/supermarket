@@ -16,7 +16,7 @@ pub enum GraphQLClientError {
 }
 
 impl GraphQLClientError {
-    fn from(error: ClientError) -> Self {
+    pub fn from(error: ClientError) -> Self {
         match error {
             ClientError::RequestError(e) => GraphQLClientError::RequestError(e),
             ClientError::JsonError(e) => GraphQLClientError::JsonError(e),

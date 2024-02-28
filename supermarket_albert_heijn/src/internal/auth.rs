@@ -16,10 +16,15 @@ struct Token {
     expires_in: i64,
 }
 
+#[derive(Debug)]
+pub struct AlbertHeijnToken {
+    access_token: Option<(String, DateTime<Local>)>,
+    refresh_token: Option<String>,
+}
+
 pub struct AlbertHeijnAuth {
     json_client: JsonClient,
-    access_token: Option<String>,
-    access_token_expires_at: Option<DateTime<Local>>,
+    access_token: Option<(String, DateTime<Local>)>,
     refresh_token: Option<String>,
 }
 
@@ -28,11 +33,23 @@ impl AlbertHeijnAuth {
         AlbertHeijnAuth {
             json_client,
             access_token: None,
-            access_token_expires_at: None,
             refresh_token: None,
         }
     }
 
+    pub fn token(&self) -> AlbertHeijnToken {
+        AlbertHeijnToken {
+            access_token: self.access_token.clone(),
+            refresh_token: self.refresh_token.clone(),
+        }
+    }
+
+    pub fn set_token(&mut self, token: AlbertHeijnToken) {
+        self.access_token = token.access_token;
+        self.refresh_token = token.refresh_token;
+    }
+
+    // TODO: remove this?
     pub fn set_refresh_token(&mut self, refresh_token: String) {
         self.refresh_token = Some(refresh_token);
     }
@@ -40,8 +57,10 @@ impl AlbertHeijnAuth {
     fn process_token(&mut self, token: Token) -> String {
         let access_token = token.access_token.clone();
 
-        self.access_token = Some(token.access_token);
-        self.access_token_expires_at = Some(Local::now() + TimeDelta::seconds(token.expires_in));
+        self.access_token = Some((
+            token.access_token,
+            Local::now() + TimeDelta::seconds(token.expires_in),
+        ));
         self.refresh_token = Some(token.refresh_token);
 
         access_token
@@ -97,7 +116,7 @@ impl AlbertHeijnAuth {
 #[async_trait]
 impl Auth for AlbertHeijnAuth {
     async fn request(&mut self, builder: RequestBuilder) -> Result<RequestBuilder, ClientError> {
-        if let Some(access_token) = &self.access_token {
+        if let Some((access_token, expires_at)) = &self.access_token {
             // TODO: check if access token is already expired
 
             Ok(builder.bearer_auth(access_token))

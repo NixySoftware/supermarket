@@ -4,7 +4,7 @@ use supermarket::internal::ClientError;
 use supermarket::internal::{Auth, GraphQLClient, GraphQLClientError, JsonClient, NoAuth};
 use tokio::sync::Mutex;
 
-use crate::internal::auth::AlbertHeijnAuth;
+use crate::internal::auth::{AlbertHeijnAuth, AlbertHeijnToken};
 use crate::internal::member::get_member;
 use crate::internal::member::GetMember;
 
@@ -51,16 +51,20 @@ impl AlbertHeijnInternalClient {
         }
     }
 
-    pub async fn auth_with_code(self, code: String) -> Result<(), ClientError> {
+    pub async fn token(&self) -> AlbertHeijnToken {
+        self.auth.lock().await.token()
+    }
+
+    pub async fn auth_with_code(&self, code: &str) -> Result<(), ClientError> {
         let mut auth = self.auth.lock().await;
-        auth.request_token(code).await?;
+        auth.request_token(String::from(code)).await?;
 
         Ok(())
     }
 
-    pub async fn auth_with_refresh_token(self, refresh_token: String) -> Result<(), ClientError> {
+    pub async fn auth_with_refresh_token(&self, refresh_token: &str) -> Result<(), ClientError> {
         let mut auth = self.auth.lock().await;
-        auth.set_refresh_token(refresh_token);
+        auth.set_refresh_token(String::from(refresh_token));
         auth.refresh_token().await?;
 
         Ok(())
