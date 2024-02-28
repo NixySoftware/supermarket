@@ -9,7 +9,7 @@ use supermarket::internal::{Auth, ClientError, JsonClient, Nothing};
 
 const OAUTH_CLIENT_ID: &str = "appie-android";
 
-#[derive(Deserialize)]
+#[derive(Deserialize, Debug)]
 struct Token {
     access_token: String,
     refresh_token: String,

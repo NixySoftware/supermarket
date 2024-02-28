@@ -22,8 +22,13 @@ mod tests {
         let member = client.internal.member().await?;
         println!("{:#?}", member);
 
+        let receipts = client.internal.receipts().await?;
+        // println!("{:#?}", receipts);
+
+        let receipt = client.internal.receipt(&receipts[0].transaction_id).await?;
+        println!("{:#?}", receipt);
+
         let token = client.token().await;
-        println!("{:#?}", token);
         credentials.set("albert_heijn", token);
 
         Ok(())

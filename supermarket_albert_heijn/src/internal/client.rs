@@ -1,12 +1,12 @@
 use std::sync::Arc;
 
-use supermarket::internal::ClientError;
 use supermarket::internal::{Auth, GraphQLClient, GraphQLClientError, JsonClient, NoAuth};
+use supermarket::internal::{ClientError, Nothing};
 use tokio::sync::Mutex;
 
 use crate::internal::auth::{AlbertHeijnAuth, AlbertHeijnToken};
-use crate::internal::member::get_member;
-use crate::internal::member::GetMember;
+use crate::internal::member::*;
+use crate::internal::receipt::*;
 
 const API_URL: &str = "https://api.ah.nl";
 const GRAPHQL_API_URL: &str = "https://api.ah.nl/graphql";
@@ -81,5 +81,20 @@ impl AlbertHeijnInternalClient {
             .await?;
 
         Ok(response.data.unwrap().member)
+    }
+
+    pub async fn receipts(&self) -> Result<Vec<ReceiptSummary>, ClientError> {
+        self.json_client
+            .get::<_, Vec<ReceiptSummary>>("/mobile-services/v1/receipts", Nothing)
+            .await
+    }
+
+    pub async fn receipt(&self, receipt_id: &str) -> Result<serde_json::Value, ClientError> {
+        self.json_client
+            .get(
+                &format!("/mobile-services/v2/receipts/{}", receipt_id),
+                Nothing,
+            )
+            .await
     }
 }

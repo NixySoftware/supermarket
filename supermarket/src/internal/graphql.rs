@@ -15,8 +15,8 @@ pub enum GraphQLClientError {
     GraphQLError(Vec<graphql_client::Error>),
 }
 
-impl GraphQLClientError {
-    pub fn from(error: ClientError) -> Self {
+impl From<ClientError> for GraphQLClientError {
+    fn from(error: ClientError) -> Self {
         match error {
             ClientError::RequestError(e) => GraphQLClientError::RequestError(e),
             ClientError::JsonError(e) => GraphQLClientError::JsonError(e),
@@ -46,14 +46,10 @@ impl GraphQLClient {
     ) -> Result<Response<Q::ResponseData>, GraphQLClientError> {
         let body = Q::build_query(variables);
 
-        let response = match self
+        let response = self
             .json_client
             .post::<_, _, Response<Q::ResponseData>>("", Nothing, body)
-            .await
-        {
-            Ok(response) => response,
-            Err(e) => return Err(GraphQLClientError::from(e)),
-        };
+            .await?;
 
         match response.errors {
             Some(errors) if !errors.is_empty() => Err(GraphQLClientError::GraphQLError(errors)),
