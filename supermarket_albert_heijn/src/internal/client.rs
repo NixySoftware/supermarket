@@ -89,9 +89,9 @@ impl AlbertHeijnInternalClient {
             .await
     }
 
-    pub async fn receipt(&self, receipt_id: &str) -> Result<serde_json::Value, ClientError> {
+    pub async fn receipt(&self, receipt_id: &str) -> Result<Receipt, ClientError> {
         self.json_client
-            .get(
+            .get::<_, Receipt>(
                 &format!("/mobile-services/v2/receipts/{}", receipt_id),
                 Nothing,
             )
