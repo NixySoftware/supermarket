@@ -118,10 +118,14 @@ impl AlbertHeijnAuth {
 #[async_trait]
 impl Auth for AlbertHeijnAuth {
     async fn request(&mut self, builder: RequestBuilder) -> Result<RequestBuilder, ClientError> {
-        if let Some((access_token, _expires_at)) = &self.access_token {
-            // TODO: check if access token is already expired
+        if let Some((access_token, expires_at)) = &self.access_token {
+            if *expires_at > Local::now() {
+                Ok(builder.bearer_auth(access_token))
+            } else {
+                let access_token = self.refresh_token().await?;
 
-            Ok(builder.bearer_auth(access_token))
+                Ok(builder.bearer_auth(access_token))
+            }
         } else if self.refresh_token.is_some() {
             let access_token = self.refresh_token().await?;
 
