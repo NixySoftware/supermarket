@@ -79,10 +79,10 @@ pub enum ReceiptUiItem {
     #[serde(rename = "tech-info", rename_all = "camelCase")]
     TechInfo {
         date_time: DateTime<Local>,
-        lane: i64,
+        lane: u64,
         operator: Option<String>,
-        store: i64,
-        transaction: i64,
+        store: u64,
+        transaction: u64,
     },
 
     #[serde(rename_all = "camelCase")]
@@ -108,6 +108,6 @@ pub enum ReceiptUiItem {
 #[serde(rename_all = "camelCase")]
 pub struct Receipt {
     pub receipt_ui_items: Vec<ReceiptUiItem>,
-    pub store_id: i64,
+    pub store_id: u64,
     pub transaction_moment: DateTime<Local>,
 }
