@@ -1,6 +1,9 @@
 use graphql_client::GraphQLQuery;
+use supermarket::Identifier;
 
 use crate::internal::scalar::*;
+
+use self::get_member::*;
 
 #[derive(GraphQLQuery)]
 #[graphql(
@@ -9,3 +12,9 @@ use crate::internal::scalar::*;
     response_derives = "Debug"
 )]
 pub struct GetMember;
+
+impl Identifier for GetMemberMember {
+    fn identifier(&self) -> String {
+        self.id.to_string()
+    }
+}

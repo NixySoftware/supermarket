@@ -1,5 +1,6 @@
 use chrono::prelude::*;
 use serde::Deserialize;
+use supermarket::Identifier;
 
 // TODO: address and currency can probably be moved to a more generic file
 
@@ -35,6 +36,12 @@ pub struct ReceiptSummary {
     pub total_discount: CurrencyAmount,
     pub transaction_id: String,
     pub transaction_moment: DateTime<Local>,
+}
+
+impl Identifier for ReceiptSummary {
+    fn identifier(&self) -> String {
+        self.transaction_id.clone()
+    }
 }
 
 #[derive(Deserialize, Debug)]
@@ -109,5 +116,13 @@ pub enum ReceiptUiItem {
 pub struct Receipt {
     pub receipt_ui_items: Vec<ReceiptUiItem>,
     pub store_id: u64,
+    #[serde(default)]
+    pub transaction_id: String,
     pub transaction_moment: DateTime<Local>,
+}
+
+impl Identifier for Receipt {
+    fn identifier(&self) -> String {
+        self.transaction_id.clone()
+    }
 }

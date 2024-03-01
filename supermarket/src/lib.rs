@@ -3,6 +3,7 @@ pub mod credentials;
 pub mod internal;
 
 pub use client::Client;
+pub use client::Identifier;
 pub use internal::ClientError;
 
 #[cfg(test)]

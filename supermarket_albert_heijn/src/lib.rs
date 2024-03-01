@@ -8,7 +8,7 @@ mod tests {
     use self::internal::AlbertHeijnToken;
 
     use super::*;
-    use supermarket::{credentials::Credentials, internal::GraphQLClientError};
+    use supermarket::{credentials::Credentials, internal::GraphQLClientError, Identifier};
 
     #[tokio::test]
     async fn it_works() -> Result<(), GraphQLClientError> {
@@ -25,7 +25,7 @@ mod tests {
         let receipts = client.internal.receipts().await?;
         // println!("{:#?}", receipts);
 
-        let receipt = client.internal.receipt(&receipts[0].transaction_id).await?;
+        let receipt = client.internal.receipt(&receipts[0].identifier()).await?;
         println!("{:#?}", receipt);
 
         let token = client.token().await;

@@ -90,11 +90,16 @@ impl AlbertHeijnInternalClient {
     }
 
     pub async fn receipt(&self, receipt_id: &str) -> Result<Receipt, ClientError> {
-        self.json_client
+        let mut receipt = self
+            .json_client
             .get::<_, Receipt>(
                 &format!("/mobile-services/v2/receipts/{}", receipt_id),
                 Nothing,
             )
-            .await
+            .await?;
+
+        receipt.transaction_id = receipt_id.to_string();
+
+        Ok(receipt)
     }
 }

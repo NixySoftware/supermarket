@@ -22,11 +22,10 @@ impl Credentials {
         if !self.is_loaded {
             self.load();
         }
-        if let Some(value) = self.values.get(&key.to_string()) {
-            Some(serde_json::from_value::<D>(value.clone()).unwrap())
-        } else {
-            None
-        }
+
+        self.values
+            .get(&key.to_string())
+            .map(|value| serde_json::from_value::<D>(value.clone()).unwrap())
     }
 
     pub fn set<S: Serialize>(&mut self, key: &str, value: S) {
@@ -51,9 +50,13 @@ impl Credentials {
         let path = Path::new("./credentials.json");
 
         if let Ok(contents) = serde_json::to_string(&self.values) {
-            if fs::write(path, contents).is_ok() {
-                ()
-            }
+            let _ = fs::write(path, contents);
         }
+    }
+}
+
+impl Default for Credentials {
+    fn default() -> Self {
+        Self::new()
     }
 }
