@@ -19,14 +19,23 @@ mod tests {
             client.set_token(token).await
         }
 
-        let member = client.internal.member().await?;
-        println!("{:#?}", member);
+        // let member = client.internal.member().await?;
+        // println!("{:#?}", member);
 
-        let receipts = client.internal.receipts().await?;
+        // let receipts = client.internal.receipts().await?;
         // println!("{:#?}", receipts);
 
-        let receipt = client.internal.receipt(&receipts[0].identifier()).await?;
-        println!("{:#?}", receipt);
+        // let receipt = client.internal.receipt(&receipts[0].identifier()).await?;
+        // println!("{:#?}", receipt);
+
+        let product_categories = client.internal.product_categories().await?;
+        println!("{:#?}", product_categories);
+
+        let product_subcategories = client
+            .internal
+            .product_subcategories(&product_categories[0].identifier())
+            .await?;
+        println!("{:#?}", product_subcategories);
 
         let token = client.token().await;
         credentials.set("albert_heijn", token);

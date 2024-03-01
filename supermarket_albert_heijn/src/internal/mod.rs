@@ -1,6 +1,7 @@
 mod auth;
 mod client;
 mod member;
+mod product;
 mod receipt;
 mod scalar;
 
