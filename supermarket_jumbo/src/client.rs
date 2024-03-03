@@ -1,10 +1,16 @@
 use supermarket::Client;
 
-pub struct JumboClient {}
+use crate::internal::JumboInternalClient;
+
+pub struct JumboClient {
+    pub internal: JumboInternalClient,
+}
 
 impl JumboClient {
     pub fn new() -> Self {
-        JumboClient {}
+        JumboClient {
+            internal: JumboInternalClient::new(),
+        }
     }
 }
 

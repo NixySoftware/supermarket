@@ -1,4 +1,5 @@
 mod client;
+mod internal;
 
 pub use client::JumboClient;
 

@@ -995,7 +995,9 @@ dependencies = [
 name = "supermarket_jumbo"
 version = "0.1.0"
 dependencies = [
+ "reqwest",
  "supermarket",
+ "tokio",
 ]
 
 [[package]]
