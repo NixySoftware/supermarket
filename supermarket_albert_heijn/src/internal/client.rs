@@ -1,8 +1,11 @@
 use std::sync::Arc;
 
 use reqwest::header::{HeaderMap, HeaderValue};
-use supermarket::internal::{Auth, GraphQLClient, GraphQLClientError, JsonClient, NoAuth};
-use supermarket::internal::{ClientError, Nothing};
+use serde::Serialize;
+use supermarket::internal::{
+    Auth, ClientError, GraphQLClient, GraphQLClientError, JsonClient, NoAuth,
+};
+use supermarket::serde::Nothing;
 use tokio::sync::Mutex;
 
 use crate::internal::auth::{AlbertHeijnAuth, AlbertHeijnToken};
@@ -119,16 +122,35 @@ impl AlbertHeijnInternalClient {
     pub async fn product_subcategories(
         &self,
         category_id: &str,
-    ) -> Result<ProductSubcategory, ClientError> {
-        self.json_client
-            .get::<_, ProductSubcategory>(
+    ) -> Result<Vec<ProductCategory>, ClientError> {
+        let result = self
+            .json_client
+            .get::<_, ProductSubcategories>(
                 &format!(
                     "/mobile-services/v1/product-shelves/categories/{}/sub-categories",
                     category_id
                 ),
                 Nothing,
             )
+            .await?;
+
+        Ok(result.children)
+    }
+
+    pub async fn search_products<Q: Serialize>(
+        &self,
+        query: Q,
+    ) -> Result<ProductSearch, ClientError> {
+        self.json_client
+            .get::<Q, ProductSearch>("/mobile-services/product/search/v2", query)
             .await
+    }
+
+    pub async fn search_products_by_category(
+        &self,
+        category_id: &str,
+    ) -> Result<ProductSearch, ClientError> {
+        self.search_products([["taxonomyId", category_id]]).await
     }
 
     pub async fn receipts(&self) -> Result<Vec<ReceiptSummary>, ClientError> {

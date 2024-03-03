@@ -1,6 +1,7 @@
 mod client;
 pub mod credentials;
 pub mod internal;
+pub mod serde;
 
 pub use client::Client;
 pub use client::Identifier;

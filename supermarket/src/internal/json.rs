@@ -5,7 +5,8 @@ use serde::{de::DeserializeOwned, Serialize};
 use tokio::sync::Mutex;
 
 use crate::internal::auth::Auth;
-use crate::internal::client::{ClientError, Nothing};
+use crate::internal::client::ClientError;
+use crate::serde::Nothing;
 
 pub struct JsonClient {
     client: reqwest::Client,

@@ -5,7 +5,8 @@ use chrono::prelude::*;
 use chrono::TimeDelta;
 use reqwest::RequestBuilder;
 use serde::{Deserialize, Serialize};
-use supermarket::internal::{Auth, ClientError, JsonClient, Nothing};
+use supermarket::internal::{Auth, ClientError, JsonClient};
+use supermarket::serde::Nothing;
 
 const OAUTH_CLIENT_ID: &str = "appie-android";
 

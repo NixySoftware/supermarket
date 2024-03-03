@@ -19,11 +19,14 @@ mod tests {
             client.set_token(token).await
         }
 
+        let token = client.token().await;
+        credentials.set("albert_heijn", token);
+
         // let member = client.internal.member().await?;
         // println!("{:#?}", member);
 
         // let receipts = client.internal.receipts().await?;
-        // println!("{:#?}", receipts);
+        // println!("{:#?}", receipts[0]);
 
         // let receipt = client.internal.receipt(&receipts[0].identifier()).await?;
         // println!("{:#?}", receipt);
@@ -31,14 +34,23 @@ mod tests {
         let product_categories = client.internal.product_categories().await?;
         println!("{:#?}", product_categories);
 
-        let product_subcategories = client
-            .internal
-            .product_subcategories(&product_categories[0].identifier())
-            .await?;
-        println!("{:#?}", product_subcategories);
+        // let product_subcategories = client
+        //     .internal
+        //     .product_subcategories(&product_categories[0].identifier())
+        //     .await?;
+        // println!("{:#?}", product_subcategories);
 
-        let token = client.token().await;
-        credentials.set("albert_heijn", token);
+        let product_search = client
+            .internal
+            .search_products([["bonus", "Bonus"]])
+            .await?;
+        println!("{:#?}", product_search);
+
+        // let product_category_search = client
+        //     .internal
+        //     .search_products_by_category(&product_categories[0].identifier())
+        //     .await?;
+        // println!("{:#?}", product_category_search);
 
         Ok(())
     }

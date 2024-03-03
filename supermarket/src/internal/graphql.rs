@@ -4,8 +4,9 @@ use graphql_client::{GraphQLQuery, Response};
 use tokio::sync::Mutex;
 
 use crate::internal::auth::Auth;
-use crate::internal::client::{ClientError, Nothing};
+use crate::internal::client::ClientError;
 use crate::internal::json::JsonClient;
+use crate::serde::Nothing;
 
 #[derive(Debug)]
 pub enum GraphQLClientError {

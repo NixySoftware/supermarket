@@ -969,6 +969,7 @@ name = "supermarket"
 version = "0.1.0"
 dependencies = [
  "async-trait",
+ "chrono",
  "graphql_client",
  "reqwest",
  "serde",
