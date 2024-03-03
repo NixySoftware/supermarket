@@ -1,11 +1,11 @@
 [package]
 name = "supermarket_albert_heijn"
-version = "0.1.0"
-edition = "2021"
 
 authors.workspace = true
+edition.workspace = true
 license.workspace = true
 repository.workspace = true
+version.workspace = true
 
 [dependencies]
 async-trait.workspace = true

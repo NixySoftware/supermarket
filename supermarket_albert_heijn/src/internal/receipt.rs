@@ -51,7 +51,7 @@ pub enum ReceiptUiItem {
     AhLogo { style: String },
 
     #[serde(rename_all = "camelCase")]
-    Divider {},
+    Divider { center_text: Option<String> },
 
     #[serde(rename = "four-text-column", rename_all = "camelCase")]
     FourTextColumn {

@@ -1,5 +1,6 @@
 mod auth;
 mod client;
+mod common;
 mod member;
 mod product;
 mod receipt;

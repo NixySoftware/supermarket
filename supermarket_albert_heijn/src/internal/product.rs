@@ -2,39 +2,9 @@ use chrono::prelude::*;
 use serde::Deserialize;
 use supermarket::Identifier;
 
-// TODO: move generic structs to a separate file?
+use crate::internal::common::{Image, Links, Page};
 
-#[derive(Deserialize, Debug)]
-#[serde(deny_unknown_fields, rename_all = "camelCase")]
-pub struct Image {
-    pub height: u64,
-    pub url: String,
-    pub width: u64,
-}
-
-#[derive(Deserialize, Debug)]
-#[serde(deny_unknown_fields, rename_all = "camelCase")]
-pub struct Page {
-    pub number: u64,
-    pub size: u64,
-    pub total_elements: u64,
-    pub total_pages: u64,
-}
-
-#[derive(Deserialize, Debug)]
-#[serde(deny_unknown_fields, rename_all = "camelCase")]
-pub struct Link {
-    pub href: String,
-}
-
-#[derive(Deserialize, Debug)]
-#[serde(deny_unknown_fields, rename_all = "camelCase")]
-pub struct Links {
-    pub current: Link,
-    pub first: Link,
-    pub last: Link,
-    pub next: Link,
-}
+// TODO: move filter structs to a separate file?
 
 #[derive(Deserialize, Debug)]
 #[serde(deny_unknown_fields, rename_all = "camelCase")]
@@ -76,6 +46,12 @@ impl Identifier for ProductCategory {
 pub struct ProductSubcategories {
     pub parent: ProductCategory,
     pub children: Vec<ProductCategory>,
+}
+
+#[derive(Deserialize, Debug)]
+#[serde(deny_unknown_fields, rename_all = "camelCase")]
+pub struct ProductSearchSuggestions {
+    pub suggestions: Vec<String>,
 }
 
 #[derive(Deserialize, Debug)]

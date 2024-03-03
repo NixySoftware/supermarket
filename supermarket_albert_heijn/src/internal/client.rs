@@ -137,6 +137,24 @@ impl AlbertHeijnInternalClient {
         Ok(result.children)
     }
 
+    pub async fn product_search_suggestions(
+        &self,
+        query: &str,
+        amount: u64,
+    ) -> Result<Vec<String>, ClientError> {
+        let result = self
+            .json_client
+            .get::<_, ProductSearchSuggestions>(
+                "/mobile-services/product/search/v2/suggestions",
+                [["query", query], ["amount", &amount.to_string()]],
+            )
+            .await?;
+
+        Ok(result.suggestions)
+    }
+
+    // TODO: return a paginator that can make requests instead of directly performing a single one
+
     pub async fn search_products<Q: Serialize>(
         &self,
         query: Q,
