@@ -57,6 +57,7 @@ mod tests {
             .product_search_suggestions("AARDBEI NED", 10)
             .await?;
         println!("{:#?}", product_search_suggestions);
+
         Ok(())
     }
 }
