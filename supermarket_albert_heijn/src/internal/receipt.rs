@@ -1,26 +1,8 @@
-use chrono::prelude::*;
+use chrono::{DateTime, Utc};
 use serde::Deserialize;
 use supermarket::Identifier;
 
-// TODO: address and currency can probably be moved to a more generic file
-
-#[derive(Deserialize, Debug)]
-#[serde(deny_unknown_fields, rename_all = "camelCase")]
-pub struct Address {
-    pub city: String,
-    pub country_code: String,
-    pub house_number: String,
-    pub postal_code: String,
-    pub street: String,
-}
-
-#[derive(Deserialize, Debug)]
-#[serde(deny_unknown_fields, rename_all = "camelCase")]
-pub struct CurrencyAmount {
-    // TODO: find a better way to represent decimal numbers
-    pub amount: f64,
-    pub currency: Option<String>,
-}
+use crate::internal::common::{Address, CurrencyAmount};
 
 #[derive(Deserialize, Debug)]
 #[serde(deny_unknown_fields, rename_all = "camelCase")]

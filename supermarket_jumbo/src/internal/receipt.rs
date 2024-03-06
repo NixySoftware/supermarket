@@ -1,6 +1,25 @@
+use chrono::{DateTime, NaiveDateTime, Utc};
+use chrono_tz::Europe::Amsterdam;
 use serde::{Deserialize, Deserializer};
 use serde_aux::field_attributes::deserialize_number_from_string;
 use supermarket::Identifier;
+
+fn deserialize_purchase_date<'de, D>(deserializer: D) -> Result<DateTime<Utc>, D::Error>
+where
+    D: Deserializer<'de>,
+{
+    let naive =
+        NaiveDateTime::parse_from_str(&String::deserialize(deserializer)?, "%Y-%m-%d %H:%M:%S")
+            .map_err(serde::de::Error::custom)?;
+
+    naive
+        .and_local_timezone(Amsterdam)
+        .single()
+        .ok_or(serde::de::Error::custom(
+            "Conversion to local timezone is ambiguous.",
+        ))
+        .map(|dt| dt.with_timezone(&Utc))
+}
 
 #[derive(Deserialize, Debug)]
 #[serde(deny_unknown_fields, rename_all = "camelCase")]
@@ -19,8 +38,8 @@ impl Identifier for ReceiptStore {
 #[serde(deny_unknown_fields, rename_all = "camelCase")]
 pub struct ReceiptSummary {
     pub point_balance: u64,
-    // TODO: convert to (Naive)DateTime?
-    pub purchase_end_on: String,
+    #[serde(deserialize_with = "deserialize_purchase_date")]
+    pub purchase_end_on: DateTime<Utc>,
     pub receipt_source: String,
     pub store: ReceiptStore,
     pub transaction_id: String,
@@ -68,7 +87,7 @@ pub struct ReceiptPoints {
 
 #[derive(Deserialize, Debug)]
 #[serde(deny_unknown_fields, rename_all = "camelCase")]
-pub struct ReceiptImageDocuments {
+pub struct ReceiptDocuments {
     pub documents: Vec<ReceiptDocumentContainer>,
 }
 
@@ -148,11 +167,11 @@ pub struct ReceiptText {
     pub print_attributes: Vec<ReceiptPrintAttribute>,
 }
 
-fn deserialize_receipt_image<'de, D>(deserializer: D) -> Result<ReceiptImageDocuments, D::Error>
+fn deserialize_receipt_documents<'de, D>(deserializer: D) -> Result<ReceiptDocuments, D::Error>
 where
     D: Deserializer<'de>,
 {
-    serde_json::from_str::<ReceiptImageDocuments>(&String::deserialize(deserializer)?)
+    serde_json::from_str::<ReceiptDocuments>(&String::deserialize(deserializer)?)
         .map_err(serde::de::Error::custom)
 }
 
@@ -161,8 +180,8 @@ where
 pub enum ReceiptImage {
     #[serde(rename = "JSON", rename_all = "camelCase")]
     Json {
-        #[serde(deserialize_with = "deserialize_receipt_image")]
-        image: ReceiptImageDocuments,
+        #[serde(deserialize_with = "deserialize_receipt_documents")]
+        image: ReceiptDocuments,
         receipt_points: ReceiptPoints,
     },
 }
@@ -172,10 +191,10 @@ pub enum ReceiptImage {
 pub struct Receipt {
     pub customer_details: ReceiptCustomer,
     pub id: String,
-    // TODO: convert to (Naive)DateTime?
-    pub purchase_end_on: String,
-    // TODO: convert to (Naive)DateTime?
-    pub purchase_start_on: String,
+    #[serde(deserialize_with = "deserialize_purchase_date")]
+    pub purchase_end_on: DateTime<Utc>,
+    #[serde(deserialize_with = "deserialize_purchase_date")]
+    pub purchase_start_on: DateTime<Utc>,
     pub receipt_source: String,
     pub receipt_image: ReceiptImage,
     pub store: ReceiptStore,

@@ -1,4 +1,4 @@
-use chrono::prelude::*;
+use chrono::NaiveDate;
 use serde::Deserialize;
 use supermarket::Identifier;
 

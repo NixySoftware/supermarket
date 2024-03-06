@@ -8,7 +8,7 @@ mod tests {
     use self::internal::JumboToken;
 
     use super::*;
-    use supermarket::{credentials::Credentials, internal::GraphQLClientError, Identifier};
+    use supermarket::{credentials::Credentials, internal::GraphQLClientError};
 
     #[tokio::test]
     async fn it_works() -> Result<(), GraphQLClientError> {
@@ -19,17 +19,17 @@ mod tests {
             client.set_token(token).await
         }
 
-        let token = client.token().await;
-        credentials.set("jumbo", token);
-
         // let profile = client.internal.profile().await?;
         // println!("{:#?}", profile);
 
         let receipts = client.internal.receipts().await?;
         println!("{:#?}", receipts);
 
-        let receipt = client.internal.receipt(&receipts[0].identifier()).await?;
-        println!("{:#?}", receipt);
+        // let receipt = client.internal.receipt(&receipts[0].identifier()).await?;
+        // println!("{:#?}", receipt);
+
+        let token = client.token().await;
+        credentials.set("jumbo", token);
 
         // let product_categories = client.internal.product_categories().await?;
         // println!("{:#?}", product_categories);

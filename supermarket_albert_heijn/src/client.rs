@@ -1,4 +1,8 @@
-use supermarket::{Client, ClientError};
+use async_trait::async_trait;
+use supermarket::{
+    receipt::{Receipt, ReceiptSummary},
+    Client, ClientError, Identifier,
+};
 
 use crate::internal::{AlbertHeijnInternalClient, AlbertHeijnToken};
 
@@ -30,7 +34,29 @@ impl AlbertHeijnClient {
     }
 }
 
-impl Client for AlbertHeijnClient {}
+#[async_trait]
+impl Client for AlbertHeijnClient {
+    async fn receipts(&self) -> Result<Vec<ReceiptSummary>, ClientError> {
+        Ok(self
+            .internal
+            .receipts()
+            .await?
+            .iter()
+            .map(|r| ReceiptSummary {
+                id: r.identifier(),
+                created_at: r.transaction_moment,
+            })
+            .collect())
+    }
+
+    async fn receipt(&self, receipt_id: &str) -> Result<Receipt, ClientError> {
+        self.internal.receipt(receipt_id).await.map(|r| Receipt {
+            id: r.identifier(),
+            created_at: r.transaction_moment,
+            products: vec![],
+        })
+    }
+}
 
 impl Default for AlbertHeijnClient {
     fn default() -> Self {

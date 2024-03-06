@@ -1,5 +1,17 @@
+use async_trait::async_trait;
+
+use crate::{
+    receipt::{Receipt, ReceiptSummary},
+    ClientError,
+};
+
 pub trait Identifier {
     fn identifier(&self) -> String;
 }
 
-pub trait Client {}
+#[async_trait]
+pub trait Client {
+    async fn receipts(&self) -> Result<Vec<ReceiptSummary>, ClientError>;
+
+    async fn receipt(&self, receipt_id: &str) -> Result<Receipt, ClientError>;
+}
