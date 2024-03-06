@@ -58,8 +58,6 @@ impl AlbertHeijnAuth {
         ));
         self.refresh_token = Some(token.refresh_token);
 
-        println!("{:#?} | {:#?}", self.access_token, self.refresh_token);
-
         access_token
     }
 

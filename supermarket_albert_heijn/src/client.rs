@@ -55,6 +55,14 @@ impl Client for AlbertHeijnClient {
             created_at: r.transaction_moment,
             products: vec![],
         })
+
+        // TODO:
+        // - Filter out product items that are not actual products (e.g. bonus card)
+        // - Group product items into actual products (include deposit, discount, etc.)
+        // - Combine a group into a receipt product
+
+        // TODO:
+        // - Consider what other parts of the receipt are relevant (e.g. subtotal, VAT, total, etc.)
     }
 }
 
