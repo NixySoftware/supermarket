@@ -19,8 +19,8 @@ struct Token {
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct AlbertHeijnToken {
-    access_token: Option<(String, DateTime<Local>)>,
-    refresh_token: Option<String>,
+    pub access_token: Option<(String, DateTime<Local>)>,
+    pub refresh_token: Option<String>,
 }
 
 pub struct AlbertHeijnAuth {
@@ -48,11 +48,6 @@ impl AlbertHeijnAuth {
     pub fn set_token(&mut self, token: AlbertHeijnToken) {
         self.access_token = token.access_token;
         self.refresh_token = token.refresh_token;
-    }
-
-    // TODO: remove this?
-    pub fn set_refresh_token(&mut self, refresh_token: String) {
-        self.refresh_token = Some(refresh_token);
     }
 
     fn process_token(&mut self, token: Token) -> String {

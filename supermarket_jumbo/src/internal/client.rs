@@ -5,16 +5,19 @@ use serde::Serialize;
 use supermarket::internal::{
     Auth, ClientError, GraphQLClient, GraphQLClientError, JsonClient, NoAuth,
 };
+use supermarket::serde::Nothing;
 use tokio::sync::Mutex;
 
 use crate::internal::auth::{JumboAuth, JumboToken};
 use crate::internal::product::*;
+use crate::internal::profile::*;
+use crate::internal::receipt::*;
 use crate::internal::search::*;
 
 const AUTH_API_URL: &str = "https://auth.jumbo.com";
 const API_URL: &str = "https://mobileapi.jumbo.com";
 const GRAPHQL_API_URL: &str = "https://www.jumbo.com/api/graphql";
-const LOYALTY_API_URL: &str = "https://loyalty-app.jumbo.com";
+const LOYALTY_API_URL: &str = "https://loyalty-app.jumbo.com/api";
 const LOYALTY_GRAPHQL_API_URL: &str = "https://loyalty-app.jumbo.com/api/graphql";
 
 const APP_NAME: &str = "Jumbo";
@@ -29,7 +32,7 @@ fn new_auth_api_client() -> reqwest::Client {
         .gzip(true)
         .user_agent(format!("{}/{}", APP_NAME, APP_VERSION))
         .build()
-        .unwrap()
+        .expect("Client should build")
 }
 
 fn new_api_client() -> reqwest::Client {
@@ -41,7 +44,7 @@ fn new_api_client() -> reqwest::Client {
         .gzip(true)
         .user_agent(format!("{}/{}", APP_NAME, APP_VERSION))
         .build()
-        .unwrap()
+        .expect("Client should build")
 }
 
 fn new_graphql_api_client() -> reqwest::Client {
@@ -53,8 +56,9 @@ fn new_graphql_api_client() -> reqwest::Client {
         .gzip(true)
         .user_agent(format!("{}/{}", APP_NAME, APP_VERSION))
         .build()
-        .unwrap()
+        .expect("Client should build")
 }
+
 pub struct JumboInternalClient {
     auth: Arc<Mutex<JumboAuth>>,
     graphql_client: GraphQLClient,
@@ -107,7 +111,7 @@ impl JumboInternalClient {
 
     pub async fn auth_with_code(&self, code: &str, code_verifier: &str) -> Result<(), ClientError> {
         let mut auth = self.auth.lock().await;
-        auth.request_token(String::from(code), String::from(code_verifier))
+        auth.request_token(code.to_string(), code_verifier.to_string())
             .await?;
 
         Ok(())
@@ -115,10 +119,24 @@ impl JumboInternalClient {
 
     pub async fn auth_with_refresh_token(&self, refresh_token: &str) -> Result<(), ClientError> {
         let mut auth = self.auth.lock().await;
-        auth.set_refresh_token(String::from(refresh_token));
+        auth.set_token(JumboToken {
+            access_token: None,
+            refresh_token: Some(refresh_token.to_string()),
+        });
         auth.refresh_token().await?;
 
         Ok(())
+    }
+
+    pub async fn profile(
+        &self,
+    ) -> Result<Option<get_profile::GetProfileProfile>, GraphQLClientError> {
+        let response: graphql_client::Response<get_profile::ResponseData> = self
+            .loyalty_graphql_client
+            .query::<GetProfile>(get_profile::Variables {})
+            .await?;
+
+        Ok(response.data.unwrap().profile)
     }
 
     pub async fn product_categories(&self) -> Result<Vec<ProductCategory>, ClientError> {
@@ -169,6 +187,18 @@ impl JumboInternalClient {
     ) -> Result<ProductSearch, ClientError> {
         self.json_client
             .get::<Q, ProductSearch>("/v17/search", query)
+            .await
+    }
+
+    pub async fn receipts(&self) -> Result<Vec<ReceiptSummary>, ClientError> {
+        self.loyalty_json_client
+            .get::<_, Vec<ReceiptSummary>>("/receipt/customer/overviews", Nothing)
+            .await
+    }
+
+    pub async fn receipt(&self, receipt_id: &str) -> Result<Receipt, ClientError> {
+        self.loyalty_json_client
+            .get::<_, Receipt>(&format!("/receipt/{}", receipt_id), Nothing)
             .await
     }
 }

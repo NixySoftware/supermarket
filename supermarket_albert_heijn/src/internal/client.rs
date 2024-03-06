@@ -32,7 +32,7 @@ fn new_api_client() -> reqwest::Client {
         .gzip(true)
         .user_agent(format!("{}/{}", APP_NAME, APP_VERSION))
         .build()
-        .unwrap()
+        .expect("Client should build")
 }
 
 fn new_graphql_api_client() -> reqwest::Client {
@@ -46,7 +46,7 @@ fn new_graphql_api_client() -> reqwest::Client {
         .gzip(true)
         .user_agent(format!("{}/{}", APP_NAME, APP_VERSION))
         .build()
-        .unwrap()
+        .expect("Client should build")
 }
 
 pub struct AlbertHeijnInternalClient {
@@ -88,14 +88,17 @@ impl AlbertHeijnInternalClient {
 
     pub async fn auth_with_code(&self, code: &str) -> Result<(), ClientError> {
         let mut auth = self.auth.lock().await;
-        auth.request_token(String::from(code)).await?;
+        auth.request_token(code.to_string()).await?;
 
         Ok(())
     }
 
     pub async fn auth_with_refresh_token(&self, refresh_token: &str) -> Result<(), ClientError> {
         let mut auth = self.auth.lock().await;
-        auth.set_refresh_token(String::from(refresh_token));
+        auth.set_token(AlbertHeijnToken {
+            access_token: None,
+            refresh_token: Some(refresh_token.to_string()),
+        });
         auth.refresh_token().await?;
 
         Ok(())

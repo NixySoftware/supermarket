@@ -9,23 +9,22 @@ use supermarket::internal::{Auth, ClientError, JsonClient};
 use supermarket::serde::Nothing;
 
 const OAUTH_CLIENT_ID: &str = "ZVa0cW0LadbDHINgrBLuEAp5amVBKQh1";
-
-// TODO: use proper OAuth library with https://auth.jumbo.com/.well-known/openid-configuration
+const OAUTH_REDIRECT_URI: &str = "https://loyalty-app.jumbo.com/home";
 
 #[derive(Deserialize, Debug)]
 struct Token {
     access_token: String,
     expires_in: i64,
-    id_token: String,
+    // id_token: String,
     refresh_token: String,
-    scope: String,
-    token_type: String,
+    // scope: String,
+    // token_type: String,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct JumboToken {
-    access_token: Option<(String, DateTime<Local>)>,
-    refresh_token: Option<String>,
+    pub access_token: Option<(String, DateTime<Local>)>,
+    pub refresh_token: Option<String>,
 }
 
 pub struct JumboAuth {
@@ -55,11 +54,6 @@ impl JumboAuth {
         self.refresh_token = token.refresh_token;
     }
 
-    // TODO: remove this?
-    pub fn set_refresh_token(&mut self, refresh_token: String) {
-        self.refresh_token = Some(refresh_token);
-    }
-
     fn process_token(&mut self, token: Token) -> String {
         let access_token = token.access_token.clone();
 
@@ -86,9 +80,10 @@ impl JumboAuth {
                 Nothing,
                 HashMap::from([
                     ("client_id", OAUTH_CLIENT_ID),
-                    ("grant_type", "authorization_code"),
                     ("code", &code),
                     ("code_verifier", &code_verifier),
+                    ("grant_type", "authorization_code"),
+                    ("redirect_uri", OAUTH_REDIRECT_URI),
                 ]),
             )
             .await?;
@@ -101,12 +96,12 @@ impl JumboAuth {
             let token = self
                 .json_client
                 .post::<_, _, Token>(
-                    // TODO
-                    "/oauth/token/refresh",
+                    "/oauth/token",
                     Nothing,
                     HashMap::from([
-                        ("clientId", OAUTH_CLIENT_ID),
-                        ("refreshToken", refresh_token),
+                        ("client_id", OAUTH_CLIENT_ID),
+                        ("grant_type", "refresh_token"),
+                        ("refresh_token", refresh_token),
                     ]),
                 )
                 .await?;

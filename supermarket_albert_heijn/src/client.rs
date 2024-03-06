@@ -1,7 +1,6 @@
 use supermarket::{Client, ClientError};
 
-use crate::internal::AlbertHeijnInternalClient;
-use crate::internal::AlbertHeijnToken;
+use crate::internal::{AlbertHeijnInternalClient, AlbertHeijnToken};
 
 pub struct AlbertHeijnClient {
     pub internal: AlbertHeijnInternalClient,
@@ -19,7 +18,7 @@ impl AlbertHeijnClient {
     }
 
     pub async fn auth_with_refresh_token(&self, refresh_token: &str) -> Result<(), ClientError> {
-        self.internal.auth_with_code(refresh_token).await
+        self.internal.auth_with_refresh_token(refresh_token).await
     }
 
     pub async fn token(&self) -> AlbertHeijnToken {

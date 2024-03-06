@@ -1,0 +1,12 @@
+query GetProfile {
+  profile: getProfile {
+    customerId
+    type
+    email
+    name {
+      givenName
+      middleName
+      familyName
+    }
+  }
+}
