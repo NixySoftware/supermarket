@@ -1,10 +1,5 @@
 [workspace]
-members = [
-    "supermarket",
-    "supermarket_albert_heijn",
-    "supermarket_jumbo",
-    "supermarket_playground",
-]
+members = ["supermarket", "supermarket_albert_heijn", "supermarket_jumbo"]
 resolver = "2"
 
 [workspace.package]
