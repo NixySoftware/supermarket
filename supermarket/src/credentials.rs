@@ -24,7 +24,7 @@ impl Credentials {
         }
 
         self.values
-            .get(&key.to_string())
+            .get(key)
             .map(|value| serde_json::from_value::<D>(value.clone()).unwrap())
     }
 
