@@ -1,36 +1,36 @@
 type Query {
-  getProfile: Profile
+    getProfile: Profile
 }
 
 type Country {
-  code: String!
-  name: String
+    code: String!
+    name: String
 }
 
 type Profile {
-  customerId: String!
-  email: String!
-  homeAddress: LoyaltyAddress!
-  loyaltyCard: LoyaltyCardObj!
-  name: LoyaltyName!
-  type: String!
+    customerId: String!
+    email: String!
+    homeAddress: LoyaltyAddress!
+    loyaltyCard: LoyaltyCardObj!
+    name: LoyaltyName!
+    type: String!
 }
 
 type LoyaltyAddress {
-  apartment: String!
-  city: String!
-  country: Country!
-  number: String!
-  postalCode: String!
-  street: String!
+    apartment: String!
+    city: String!
+    country: Country!
+    number: String!
+    postalCode: String!
+    street: String!
 }
 
 type LoyaltyCardObj {
-  number: String!
+    number: String!
 }
 
 type LoyaltyName {
-  familyName: String
-  givenName: String
-  middleName: String
+    familyName: String
+    givenName: String
+    middleName: String
 }

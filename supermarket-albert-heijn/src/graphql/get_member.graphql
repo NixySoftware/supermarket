@@ -1,11 +1,11 @@
 query GetMember {
-  member {
-    id
-    isB2B
-    emailAddress
-    name {
-      first
-      last
+    member {
+        id
+        isB2B
+        emailAddress
+        name {
+            first
+            last
+        }
     }
-  }
 }

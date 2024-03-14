@@ -1,8 +1,8 @@
 query GetSearchSuggestions($input: SearchSuggestionsInput) {
-  searchSuggestions(input: $input) {
-    keywords {
-      displayText
-      query
+    searchSuggestions(input: $input) {
+        keywords {
+            displayText
+            query
+        }
     }
-  }
 }

@@ -1,16 +1,16 @@
 type Query {
-  searchSuggestions(input: SearchSuggestionsInput): SearchSuggestions!
+    searchSuggestions(input: SearchSuggestionsInput): SearchSuggestions!
 }
 
 input SearchSuggestionsInput {
-  searchTerms: String!
+    searchTerms: String!
 }
 
 type SearchSuggestions {
-  keywords: [SearchSuggestionsKeyword!]!
+    keywords: [SearchSuggestionsKeyword!]!
 }
 
 type SearchSuggestionsKeyword {
-  displayText: String!
-  query: String!
+    displayText: String!
+    query: String!
 }
