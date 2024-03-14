@@ -1,0 +1,10 @@
+services:
+    postgresql:
+        image: postgres
+        restart: unless-stopped
+        ports:
+            - '55432:5432'
+        environment:
+            POSTGRES_USER: supermarket
+            POSTGRES_PASSWORD: supermarket
+            POSTGRES_DB: supermarket

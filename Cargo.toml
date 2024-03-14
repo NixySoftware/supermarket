@@ -4,6 +4,7 @@ members = [
     "supermarket-albert-heijn",
     "supermarket-jumbo",
     "supermarket-web",
+    "supermarket-web/migration",
 ]
 resolver = "2"
 
