@@ -1,9 +1,9 @@
 [workspace]
 members = [
     "supermarket",
-    "supermarket_albert_heijn",
-    "supermarket_jumbo",
-    "supermarket_web",
+    "supermarket-albert-heijn",
+    "supermarket-jumbo",
+    "supermarket-web",
 ]
 resolver = "2"
 

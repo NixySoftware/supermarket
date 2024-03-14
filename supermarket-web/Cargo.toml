@@ -1,5 +1,5 @@
 [package]
-name = "supermarket_web"
+name = "supermarket-web"
 version = "0.1.0"
 
 authors.workspace = true
@@ -11,13 +11,16 @@ repository.workspace = true
 crate-type = ["cdylib", "rlib"]
 
 [dependencies]
+async-trait.workspace = true
 axum = { version = "0.7.4", optional = true }
+axum-login = { version = "0.14.0", optional = true }
 console_error_panic_hook = { version = "0.1.7" }
 http = { version = "1.1.0" }
 leptos = { version = "0.6.9", features = ["nightly"] }
 leptos_axum = { version = "0.6.9", optional = true }
 leptos_meta = { version = "0.6.9", features = ["nightly"] }
 leptos_router = { version = "0.6.9", features = ["nightly"] }
+openidconnect = { version = "3.5.0", optional = true }
 thiserror = { version = "1.0.57" }
 tokio = { version = "1.36.0", features = ["rt-multi-thread"], optional = true }
 tower = { version = "0.4.13", optional = true }
@@ -26,10 +29,13 @@ tracing = { version = "0.1.40", optional = true }
 wasm-bindgen = { version = "0.2.92" }
 
 [features]
+default = ["ssr"]
 hydrate = ["leptos/hydrate", "leptos_meta/hydrate", "leptos_router/hydrate"]
 ssr = [
     "dep:axum",
+    "dep:axum-login",
     "dep:leptos_axum",
+    "dep:openidconnect",
     "dep:tokio",
     "dep:tower",
     "dep:tower-http",
