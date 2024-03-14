@@ -4533,6 +4533,7 @@ dependencies = [
  "axum",
  "axum-login",
  "console_error_panic_hook",
+ "dotenvy",
  "http 1.1.0",
  "leptos",
  "leptos_axum",

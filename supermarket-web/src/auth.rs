@@ -1,17 +1,19 @@
 use async_trait::async_trait;
 use axum_login::{AuthUser, AuthnBackend, UserId};
+use sea_orm::{prelude::Uuid, DatabaseConnection, DbErr, EntityTrait};
+
+use crate::entities::user;
 
 #[derive(Debug, Clone)]
-pub struct Credentials {}
+pub enum Credentials {
+    Oidc,
+}
 
-#[derive(Debug, Clone)]
-pub struct User {}
-
-impl AuthUser for User {
-    type Id = String;
+impl AuthUser for user::Model {
+    type Id = Uuid;
 
     fn id(&self) -> Self::Id {
-        todo!()
+        self.id
     }
 
     fn session_auth_hash(&self) -> &[u8] {
@@ -21,16 +23,18 @@ impl AuthUser for User {
 
 #[derive(Debug, thiserror::Error)]
 pub enum BackendError {
-    // #[error(transparent)]
-    // Discovery(DiscoveryError<AsyncHttpClientError>),
+    #[error(transparent)]
+    Database(#[from] DbErr),
 }
 
 #[derive(Debug, Clone)]
-pub struct Backend {}
+pub struct Backend {
+    database: DatabaseConnection,
+}
 
 impl Backend {
-    pub fn new() -> Self {
-        Self {}
+    pub fn new(database: DatabaseConnection) -> Self {
+        Self { database }
     }
 }
 
@@ -38,7 +42,7 @@ impl Backend {
 impl AuthnBackend for Backend {
     type Credentials = Credentials;
     type Error = BackendError;
-    type User = User;
+    type User = user::Model;
 
     async fn authenticate(
         &self,
@@ -48,6 +52,10 @@ impl AuthnBackend for Backend {
     }
 
     async fn get_user(&self, user_id: &UserId<Self>) -> Result<Option<Self::User>, Self::Error> {
-        todo!()
+        let user = user::Entity::find_by_id(*user_id)
+            .one(&self.database)
+            .await?;
+
+        Ok(user)
     }
 }
