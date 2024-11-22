@@ -14,7 +14,7 @@ async-trait = "0.1.77"
 chrono = { version = "0.4.34", features = ["serde"] }
 chrono-tz = { version = "0.10.0", features = ["filter-by-regex"] }
 graphql_client = { version = "0.13.0" }
-reqwest = { version = "0.11.24", features = [
+reqwest = { version = "0.12.0", features = [
     "gzip",
     "json",
     "native-tls-alpn",
