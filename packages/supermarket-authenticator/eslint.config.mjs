@@ -8,7 +8,7 @@ import tseslint from 'typescript-eslint';
 
 export default tseslint.config(
     {
-        ignores: ['.vite/', 'build/', 'coverage/'],
+        ignores: ['.vite/', 'build/', 'coverage/', 'dist/'],
     },
 
     // ESLint

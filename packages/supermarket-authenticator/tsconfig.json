@@ -7,6 +7,10 @@
         "module": "commonjs",
         "moduleResolution": "node",
         "outDir": "dist",
+        "paths": {
+            "~/*": ["./src/*"],
+            "~assets/*": ["./assets/*"]
+        },
         "sourceMap": true,
         "target": "ESNext",
         "verbatimModuleSyntax": false
@@ -19,6 +23,7 @@
         "eslint.config.mjs",
         "forge.config.ts",
         "forge.env.d.ts",
+        "tailwind.config.ts",
         "vite.*.config.ts",
         "src/"
     ]
