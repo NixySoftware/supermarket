@@ -1,0 +1,25 @@
+{
+    "compilerOptions": {
+        "allowImportingTsExtensions": false,
+        "baseUrl": ".",
+        "jsx": "react-jsx",
+        "lib": ["ESNext", "DOM", "DOM.Iterable"],
+        "module": "commonjs",
+        "moduleResolution": "node",
+        "outDir": "dist",
+        "sourceMap": true,
+        "target": "ESNext",
+        "verbatimModuleSyntax": false
+    },
+    "extends": "./tsconfig.base.json",
+    "include": [
+        "eslint-plugin-import.d.ts",
+        "eslint-plugin-react.d.ts",
+        "eslint-plugin-react-hooks.d.ts",
+        "eslint.config.mjs",
+        "forge.config.ts",
+        "forge.env.d.ts",
+        "vite.*.config.ts",
+        "src/"
+    ]
+}

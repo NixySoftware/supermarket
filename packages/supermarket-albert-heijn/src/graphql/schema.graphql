@@ -24015,7 +24015,7 @@ type Query {
         uses the offset into the list of transactions and the limit of transactions to return
         in this query.
         """
-        pagination: OffsetLimitPagination! = {limit: 10, offset: 0}
+        pagination: OffsetLimitPagination! = { limit: 10, offset: 0 }
 
         """
         The loyalty program to fetch the transactions for.
@@ -24575,7 +24575,7 @@ type Query {
         uses the offset into the list of transactions and the limit of transactions to return
         in this query.
         """
-        pagination: OffsetLimitPagination! = {limit: 10, offset: 0}
+        pagination: OffsetLimitPagination! = { limit: 10, offset: 0 }
     ): PurchaseStampTransactionPage!
 
     """

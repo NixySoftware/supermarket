@@ -9,7 +9,12 @@
         "packages/supermarket-authenticator"
     ],
     "devDependencies": {
-        "prettier": "^3.4.2"
+        "@commitlint/cli": "^19.6.1",
+        "@commitlint/config-conventional": "^19.6.0",
+        "@trivago/prettier-plugin-sort-imports": "^5.0.0",
+        "prettier": "^3.4.2",
+        "prettier-plugin-sort-json": "^4.1.1",
+        "prettier-plugin-tailwindcss": "^0.6.9"
     },
     "engines": {
         "node": ">=22"
