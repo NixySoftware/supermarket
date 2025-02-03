@@ -1,0 +1,17 @@
+name: Pull Request
+
+on:
+    pull_request:
+        types: [opened, synchronize, reopened, edited]
+
+jobs:
+    lint-title:
+        runs-on: ubuntu-latest
+        name: Lint title
+
+        steps:
+            - name: Conventional Commits
+              uses: ytanikin/pr-conventional-commits@1.4.1
+              with:
+                  task_types: '["build","chore","ci","docs","feat","fix","perf","refactor","revert","style","test"]'
+                  add_label: 'false'
