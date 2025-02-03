@@ -41,6 +41,7 @@ impl Identifier for ProductCategory {
     }
 }
 
+#[expect(dead_code)]
 #[derive(Deserialize, Debug)]
 #[serde(deny_unknown_fields, rename_all = "camelCase")]
 pub struct ProductSubcategories {

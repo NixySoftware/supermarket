@@ -73,6 +73,7 @@ impl Identifier for Product {
     }
 }
 
+#[expect(dead_code)]
 #[derive(Deserialize, Debug)]
 #[serde(deny_unknown_fields, rename_all = "camelCase")]
 pub struct ProductAllergens {
@@ -80,6 +81,7 @@ pub struct ProductAllergens {
     pub may_contain: Vec<ProductAllergen>,
 }
 
+#[expect(dead_code)]
 #[derive(Deserialize, Debug)]
 #[serde(deny_unknown_fields, rename_all = "camelCase")]
 pub struct ProductAllergen {

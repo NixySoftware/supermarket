@@ -5,12 +5,14 @@
     "repository": "github:NixySoftware/supermarket",
     "license": "MIT",
     "private": true,
-    "scripts": {},
+    "workspaces": [
+        "packages/supermarket-authenticator"
+    ],
     "devDependencies": {
-        "prettier": "^3.1.1"
+        "prettier": "^3.4.2"
     },
     "engines": {
-        "node": ">=18"
+        "node": ">=22"
     },
     "packageManager": "npm@11.1.0"
 }
