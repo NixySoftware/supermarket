@@ -10,6 +10,7 @@ mod tests {
     use super::*;
     use supermarket::{credentials::Credentials, internal::GraphQLClientError};
 
+    #[ignore]
     #[tokio::test]
     async fn it_works() -> Result<(), GraphQLClientError> {
         let mut credentials = Credentials::new();
@@ -19,8 +20,8 @@ mod tests {
             client.set_token(token).await
         }
 
-        // let profile = client.internal.profile().await?;
-        // println!("{:#?}", profile);
+        let profile = client.internal.profile().await?;
+        println!("{:#?}", profile);
 
         let receipts = client.internal.receipts().await?;
         println!("{:#?}", receipts);

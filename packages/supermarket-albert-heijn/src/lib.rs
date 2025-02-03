@@ -10,6 +10,7 @@ mod tests {
     use super::*;
     use supermarket::{credentials::Credentials, internal::GraphQLClientError, Identifier};
 
+    #[ignore]
     #[tokio::test]
     async fn it_works() -> Result<(), GraphQLClientError> {
         let mut credentials = Credentials::new();
