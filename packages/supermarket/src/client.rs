@@ -1,8 +1,8 @@
 use async_trait::async_trait;
 
 use crate::{
-    receipt::{Receipt, ReceiptSummary},
     ClientError,
+    receipt::{Receipt, ReceiptSummary},
 };
 
 pub trait Identifier {

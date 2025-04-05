@@ -1,7 +1,7 @@
 use async_trait::async_trait;
 use supermarket::{
-    receipt::{Receipt, ReceiptSummary},
     Client, ClientError, Identifier,
+    receipt::{Receipt, ReceiptSummary},
 };
 
 use crate::internal::{AlbertHeijnInternalClient, AlbertHeijnToken};

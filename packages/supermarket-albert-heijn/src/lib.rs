@@ -8,7 +8,7 @@ mod tests {
     use self::internal::AlbertHeijnToken;
 
     use super::*;
-    use supermarket::{credentials::Credentials, internal::GraphQLClientError, Identifier};
+    use supermarket::{Identifier, credentials::Credentials, internal::GraphQLClientError};
 
     #[ignore]
     #[tokio::test]

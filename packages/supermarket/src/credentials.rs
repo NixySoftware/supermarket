@@ -2,7 +2,7 @@
 
 use std::{collections::HashMap, fs, path::Path};
 
-use serde::{de::DeserializeOwned, Serialize};
+use serde::{Serialize, de::DeserializeOwned};
 use serde_json::Value;
 
 pub struct Credentials {
