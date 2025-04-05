@@ -1,8 +1,7 @@
 use std::collections::HashMap;
 
 use async_trait::async_trait;
-use chrono::prelude::*;
-use chrono::TimeDelta;
+use chrono::{DateTime, Local, TimeDelta};
 use reqwest::RequestBuilder;
 use serde::{Deserialize, Serialize};
 use supermarket::internal::{Auth, ClientError, JsonClient};

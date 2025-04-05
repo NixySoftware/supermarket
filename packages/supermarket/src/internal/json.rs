@@ -1,7 +1,7 @@
 use std::sync::Arc;
 
 use reqwest::Method;
-use serde::{de::DeserializeOwned, Serialize};
+use serde::{Serialize, de::DeserializeOwned};
 use tokio::sync::Mutex;
 
 use crate::internal::auth::Auth;
