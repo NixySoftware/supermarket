@@ -30,7 +30,7 @@ fn new_api_client() -> reqwest::Client {
     reqwest::Client::builder()
         .default_headers(headers)
         .gzip(true)
-        .user_agent(format!("{}/{}", APP_NAME, APP_VERSION))
+        .user_agent(format!("{APP_NAME}/{APP_VERSION}"))
         .build()
         .expect("Client should build")
 }
@@ -44,7 +44,7 @@ fn new_graphql_api_client() -> reqwest::Client {
     reqwest::Client::builder()
         .default_headers(headers)
         .gzip(true)
-        .user_agent(format!("{}/{}", APP_NAME, APP_VERSION))
+        .user_agent(format!("{APP_NAME}/{APP_VERSION}"))
         .build()
         .expect("Client should build")
 }
@@ -130,8 +130,7 @@ impl AlbertHeijnInternalClient {
             .json_client
             .get::<_, ProductSubcategories>(
                 &format!(
-                    "/mobile-services/v1/product-shelves/categories/{}/sub-categories",
-                    category_id
+                    "/mobile-services/v1/product-shelves/categories/{category_id}/sub-categories"
                 ),
                 Nothing,
             )
@@ -184,7 +183,7 @@ impl AlbertHeijnInternalClient {
         let mut receipt = self
             .json_client
             .get::<_, Receipt>(
-                &format!("/mobile-services/v2/receipts/{}", receipt_id),
+                &format!("/mobile-services/v2/receipts/{receipt_id}"),
                 Nothing,
             )
             .await?;

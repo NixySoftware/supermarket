@@ -30,7 +30,7 @@ mod tests {
         // println!("{:#?}", receipts);
 
         let receipt = client.internal.receipt(&receipts[1].identifier()).await?;
-        println!("{:#?}", receipt);
+        println!("{receipt:#?}");
 
         // let product_categories = client.internal.product_categories().await?;
         // println!("{:#?}", product_categories);

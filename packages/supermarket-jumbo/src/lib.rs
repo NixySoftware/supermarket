@@ -21,10 +21,10 @@ mod tests {
         }
 
         let profile = client.internal.profile().await?;
-        println!("{:#?}", profile);
+        println!("{profile:#?}");
 
         let receipts = client.internal.receipts().await?;
-        println!("{:#?}", receipts);
+        println!("{receipts:#?}");
 
         // let receipt = client.internal.receipt(&receipts[0].identifier()).await?;
         // println!("{:#?}", receipt);
