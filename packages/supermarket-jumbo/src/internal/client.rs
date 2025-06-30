@@ -30,7 +30,7 @@ fn new_auth_api_client() -> reqwest::Client {
     reqwest::Client::builder()
         .default_headers(headers)
         .gzip(true)
-        .user_agent(format!("{}/{}", APP_NAME, APP_VERSION))
+        .user_agent(format!("{APP_NAME}/{APP_VERSION}"))
         .build()
         .expect("Client should build")
 }
@@ -42,7 +42,7 @@ fn new_api_client() -> reqwest::Client {
     reqwest::Client::builder()
         .default_headers(headers)
         .gzip(true)
-        .user_agent(format!("{}/{}", APP_NAME, APP_VERSION))
+        .user_agent(format!("{APP_NAME}/{APP_VERSION}"))
         .build()
         .expect("Client should build")
 }
@@ -54,7 +54,7 @@ fn new_graphql_api_client() -> reqwest::Client {
     reqwest::Client::builder()
         .default_headers(headers)
         .gzip(true)
-        .user_agent(format!("{}/{}", APP_NAME, APP_VERSION))
+        .user_agent(format!("{APP_NAME}/{APP_VERSION}"))
         .build()
         .expect("Client should build")
 }
@@ -198,7 +198,7 @@ impl JumboInternalClient {
 
     pub async fn receipt(&self, receipt_id: &str) -> Result<Receipt, ClientError> {
         self.loyalty_json_client
-            .get::<_, Receipt>(&format!("/receipt/{}", receipt_id), Nothing)
+            .get::<_, Receipt>(&format!("/receipt/{receipt_id}"), Nothing)
             .await
     }
 }
