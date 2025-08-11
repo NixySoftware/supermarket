@@ -50,13 +50,13 @@ impl JsonClient {
                 Err(e) => Err(ClientError::RequestError(e)),
             }
         } else {
-            if let Some(value) = response.headers().get("content-type") {
-                if value.to_str().unwrap_or("") == "application/json" {
-                    return match response.json::<serde_json::Value>().await {
-                        Ok(response) => Err(ClientError::JsonError(response)),
-                        Err(e) => Err(ClientError::RequestError(e)),
-                    };
-                }
+            if let Some(value) = response.headers().get("content-type")
+                && value.to_str().unwrap_or("") == "application/json"
+            {
+                return match response.json::<serde_json::Value>().await {
+                    Ok(response) => Err(ClientError::JsonError(response)),
+                    Err(e) => Err(ClientError::RequestError(e)),
+                };
             }
 
             match response.text().await {

@@ -36,12 +36,11 @@ impl Credentials {
 
     fn load(&mut self) {
         let path = Path::new("./credentials.json");
-        if path.exists() {
-            if let Ok(contents) = fs::read_to_string(path) {
-                if let Ok(values) = serde_json::from_str::<HashMap<String, Value>>(&contents) {
-                    self.values = values
-                }
-            }
+        if path.exists()
+            && let Ok(contents) = fs::read_to_string(path)
+            && let Ok(values) = serde_json::from_str::<HashMap<String, Value>>(&contents)
+        {
+            self.values = values
         }
         self.is_loaded = true;
     }
