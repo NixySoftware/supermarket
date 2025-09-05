@@ -25,7 +25,7 @@ repos:
       rev: v9.34.0
       hooks:
           - id: eslint
-            entry: bash -c 'cd packages/web-react && eslint'
+            entry: bash -c 'cd packages/supermarket-authenticator && eslint'
             types: [file]
             types_or: [javascript, jsx, ts, tsx]
             additional_dependencies:

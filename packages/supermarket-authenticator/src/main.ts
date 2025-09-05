@@ -1,6 +1,5 @@
 import { BrowserWindow, app } from 'electron';
 import started from 'electron-squirrel-startup';
-import path from 'node:path';
 
 import { getCodeFromRedirectUrl } from './constants/supermarkets';
 
@@ -13,9 +12,7 @@ const createWindow = async () => {
     const mainWindow = new BrowserWindow({
         width: 800,
         height: 600,
-        webPreferences: {
-            preload: path.join(__dirname, 'preload.js'),
-        },
+        webPreferences: { preload: new URL('./preload.js', import.meta.url).toString() },
     });
 
     mainWindow.webContents.addListener('will-navigate', (event) => {
@@ -37,7 +34,7 @@ const loadRenderer = async (window: BrowserWindow, query: Record<string, string>
         }
         await window.loadURL(url.toString());
     } else {
-        await window.loadFile(path.join(__dirname, `../renderer/${MAIN_WINDOW_VITE_NAME}/index.html`), {
+        await window.loadFile(new URL(`../renderer/${MAIN_WINDOW_VITE_NAME}/index.html`, import.meta.url).toString(), {
             query,
         });
     }
@@ -57,10 +54,7 @@ const intercept = (
         console.log(supermarket, code);
 
         event.preventDefault();
-        void loadRenderer(window, {
-            'supermarket-id': supermarket.id,
-            'supermarket-code': code,
-        });
+        void loadRenderer(window, { 'supermarket-id': supermarket.id, 'supermarket-code': code });
     }
 };
 
