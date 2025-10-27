@@ -91,12 +91,7 @@ export default tseslint.config(
     },
 
     // React Hooks
-    {
-        plugins: {
-            'react-hooks': reactHooks,
-        },
-        rules: reactHooks.configs.recommended.rules,
-    },
+    reactHooks.configs.flat.recommended,
 
     // JSX Accessibility
     jsxA11y.flatConfigs.recommended,
