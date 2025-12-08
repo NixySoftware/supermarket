@@ -14,7 +14,7 @@ jobs:
 
         steps:
             - name: Conventional Commits
-              uses: ytanikin/pr-conventional-commits@1.4.2
+              uses: ytanikin/pr-conventional-commits@1.5.1
               with:
                   task_types: '["build","chore","ci","docs","feat","fix","perf","refactor","revert","style","test"]'
                   add_label: 'false'
