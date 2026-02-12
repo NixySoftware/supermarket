@@ -22,7 +22,7 @@ repos:
           - id: clippy
 
     - repo: https://github.com/pre-commit/mirrors-eslint
-      rev: v9.39.1
+      rev: v10.0.0
       hooks:
           - id: eslint
             entry: bash -c 'cd packages/supermarket-authenticator && eslint'
