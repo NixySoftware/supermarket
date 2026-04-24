@@ -1,7 +1,7 @@
-import { type ConfigEnv, defineConfig } from 'vite';
+import { defineConfig } from 'vite';
 
 export default defineConfig((env) => {
-    const forgeEnv = env as ConfigEnv<'build'>;
+    const forgeEnv = env as unknown as { forgeConfigSelf: { entry: string } };
     const { forgeConfigSelf } = forgeEnv;
 
     return {
@@ -11,6 +11,9 @@ export default defineConfig((env) => {
                 fileName: () => '[name].js',
                 formats: ['es'],
             },
+        },
+        resolve: {
+            tsconfigPaths: true,
         },
     };
 });
