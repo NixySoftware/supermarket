@@ -1,12 +1,12 @@
 declare module 'eslint-plugin-react' {
-    import type { TSESLint } from '@typescript-eslint/utils';
+    import type { Linter } from 'eslint';
 
     const plugin: {
         configs: {
             flat: {
-                all: TSESLint.FlatConfig.Config;
-                recommended: TSESLint.FlatConfig.Config;
-                'jsx-runtime': TSESLint.FlatConfig.Config;
+                all: Linter.Config;
+                recommended: Linter.Config;
+                'jsx-runtime': Linter.Config;
             };
         };
     };

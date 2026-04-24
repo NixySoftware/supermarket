@@ -9,6 +9,7 @@ repos:
       rev: v3.1.0
       hooks:
           - id: prettier
+            language: node
             additional_dependencies:
                 - '@trivago/prettier-plugin-sort-imports@^5.0.0'
                 - prettier@^3.4.2
@@ -25,6 +26,7 @@ repos:
       rev: v9.39.1
       hooks:
           - id: eslint
+            language: node
             entry: bash -c 'cd packages/supermarket-authenticator && eslint'
             types: [file]
             types_or: [javascript, jsx, ts, tsx]
@@ -41,6 +43,7 @@ repos:
       rev: v9.24.0
       hooks:
           - id: commitlint
+            language: node
             stages: [commit-msg]
             additional_dependencies:
                 - '@commitlint/cli@^19.6.1'

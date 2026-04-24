@@ -1,10 +1,10 @@
 declare module 'eslint-plugin-import' {
-    import type { TSESLint } from '@typescript-eslint/utils';
+    import type { Linter } from 'eslint';
 
     const plugin: {
         flatConfigs: {
-            recommended: TSESLint.FlatConfig.Config;
-            typescript: TSESLint.FlatConfig.Config;
+            recommended: Linter.Config;
+            typescript: Linter.Config;
         };
     };
 
