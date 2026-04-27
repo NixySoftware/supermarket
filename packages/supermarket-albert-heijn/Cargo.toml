@@ -14,5 +14,5 @@ graphql_client.workspace = true
 reqwest.workspace = true
 serde.workspace = true
 serde_json.workspace = true
-supermarket = { path = "../supermarket" }
+supermarket.workspace = true
 tokio.workspace = true
