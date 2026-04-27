@@ -8,13 +8,6 @@ permissions:
     contents: read
 
 jobs:
-    lint-title:
-        runs-on: ubuntu-latest
-        name: Lint title
-
-        steps:
-            - name: Conventional Commits
-              uses: ytanikin/pr-conventional-commits@1.5.2
-              with:
-                  task_types: '["build","chore","ci","docs","feat","fix","perf","refactor","revert","style","test"]'
-                  add_label: 'false'
+    pull-request:
+        name: Pull Request
+        uses: NixySoftware/.github/.github/workflows/commits.yml@e4cce7beed9cf44052c57e416e15cc25f6617eb8

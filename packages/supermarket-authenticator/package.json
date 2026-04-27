@@ -9,12 +9,12 @@
     "main": ".vite/build/main.js",
     "type": "module",
     "scripts": {
+        "check:types": "tsc --skipLibCheck",
+        "lint": "eslint .",
         "start": "electron-forge start",
         "package": "electron-forge package",
         "make": "electron-forge make",
-        "publish": "electron-forge publish",
-        "lint": "eslint .",
-        "typecheck": "tsc --skipLibCheck"
+        "publish": "electron-forge publish"
     },
     "dependencies": {
         "@radix-ui/react-slot": "^1.2.3",

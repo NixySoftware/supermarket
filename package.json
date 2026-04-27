@@ -8,6 +8,10 @@
     "workspaces": [
         "packages/supermarket-authenticator"
     ],
+    "scripts": {
+        "check:types": "npm run --workspaces check:types",
+        "lint": "npm run --workspaces lint"
+    },
     "devDependencies": {
         "@commitlint/cli": "^20.0.0",
         "@commitlint/config-conventional": "^20.0.0",
