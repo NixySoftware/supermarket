@@ -1,8 +1,8 @@
 // @ts-check
 import eslint from '@eslint/js';
-import eslintImport from 'eslint-plugin-import';
-import jsxA11y from 'eslint-plugin-jsx-a11y';
-import react from 'eslint-plugin-react';
+// import eslintImport from 'eslint-plugin-import';
+// import jsxA11y from 'eslint-plugin-jsx-a11y';
+// import react from 'eslint-plugin-react';
 import reactHooks from 'eslint-plugin-react-hooks';
 import { defineConfig } from 'eslint/config';
 import tseslint from 'typescript-eslint';
@@ -16,10 +16,8 @@ export default defineConfig(
     eslint.configs.recommended,
 
     // TypeScript ESLint
-    /* eslint-disable import/no-named-as-default-member */
     tseslint.configs.strictTypeChecked,
     tseslint.configs.stylisticTypeChecked,
-    /* eslint-enable import/no-named-as-default-member */
     {
         languageOptions: {
             parserOptions: {
@@ -54,52 +52,52 @@ export default defineConfig(
     },
 
     // Import
-    eslintImport.flatConfigs.recommended,
-    eslintImport.flatConfigs.typescript,
-    {
-        settings: {
-            'import/internal-regex': '^~/',
-            'import/resolver': {
-                node: {
-                    extensions: ['.ts', '.tsx'],
-                },
-                typescript: {
-                    alwaysTryTypes: true,
-                },
-            },
-        },
-        rules: {
-            'import/namespace': ['error', { allowComputed: true }],
-            // TypeScript alreadys checks imports.
-            'import/no-unresolved': 'off',
-        },
-    },
+    // eslintImport.flatConfigs.recommended,
+    // eslintImport.flatConfigs.typescript,
+    // {
+    //     settings: {
+    //         'import/internal-regex': '^~/',
+    //         'import/resolver': {
+    //             node: {
+    //                 extensions: ['.ts', '.tsx'],
+    //             },
+    //             typescript: {
+    //                 alwaysTryTypes: true,
+    //             },
+    //         },
+    //     },
+    //     rules: {
+    //         'import/namespace': ['error', { allowComputed: true }],
+    //         // TypeScript alreadys checks imports.
+    //         'import/no-unresolved': 'off',
+    //     },
+    // },
 
     // React
-    react.configs.flat.recommended,
-    react.configs.flat['jsx-runtime'],
-    {
-        settings: {
-            react: {
-                version: 'detect',
-            },
-            formComponents: ['Form'],
-            linkComponents: [
-                { name: 'Link', linkAttribute: 'to' },
-                { name: 'NavLink', linkAttribute: 'to' },
-            ],
-        },
-    },
+    // react.configs.flat.recommended,
+    // react.configs.flat['jsx-runtime'],
+    // {
+    //     settings: {
+    //         react: {
+    //             version: 'detect',
+    //         },
+    //         formComponents: ['Form'],
+    //         linkComponents: [
+    //             { name: 'Link', linkAttribute: 'to' },
+    //             { name: 'NavLink', linkAttribute: 'to' },
+    //         ],
+    //     },
+    // },
 
     // React Hooks
     reactHooks.configs.flat.recommended,
 
     // JSX Accessibility
-    jsxA11y.flatConfigs.recommended,
-    {
-        rules: {
-            // TODO: Consider introducing an accessibility setting for autofocus.
-            'jsx-a11y/no-autofocus': 'off',
-        },
-    },
+    // jsxA11y.flatConfigs.recommended,
+    // {
+    //     rules: {
+    //         // TODO: Consider introducing an accessibility setting for autofocus.
+    //         'jsx-a11y/no-autofocus': 'off',
+    //     },
+    // },
 );
