@@ -23,7 +23,7 @@ repos:
           - id: clippy
 
     - repo: https://github.com/pre-commit/mirrors-eslint
-      rev: v10.8.0
+      rev: v10.8.1
       hooks:
           - id: eslint
             language: node
